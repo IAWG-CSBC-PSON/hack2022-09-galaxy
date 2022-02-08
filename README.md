@@ -34,3 +34,19 @@ Testing of tools can be completed using a local instance of Galaxy or using Plan
 ### Galaxy for Image Processing
  - [MCMICRO website](https://mcmicro.org/)
  - [Imaging Tutorials](https://training.galaxyproject.org/training-material/topics/imaging/)
+
+## List of MTI tools in Galaxy
+This is a list of multiplex tissue imaging tools currently available in Galaxy.
+| Tool             | Description | Version     |
+| ----------- | ----------- |----------- |
+| [Basic Illumination](https://github.com/labsyspharm/basic-illumination) | Illumination Correction | 1.0.2 |
+| [Ashlar](https://github.com/labsyspharm/ashlar) | Stitching & Registration | 1.14.0 |
+| [Coreograph](https://github.com/HMS-IDAC/UNetCoreograph) | TMA dearray | 2.2.3 |
+| [UnMICST](https://github.com/HMS-IDAC/UnMicst) | Probability map generator | 2.7.1 | 
+| [Mesmer](https://github.com/vanvalenlab/deepcell-applications) | Segmentation | 0.3.1 |
+| [Cellpose](https://github.com/MouseLand/cellpose) | Segmentation | |
+| [S3Segmenter](https://github.com/HMS-IDAC/S3segmenter) | Segmentation | 1.3.8 | 
+| [MCQuant](https://github.com/labsyspharm/quantification) | Feature quantification | 1.5.0 |
+| [Scimap](https://github.com/labsyspharm/scimap) | Spatial single-cell analysis toolkit | 0.17.7 | 
+| [Naivestates](https://github.com/labsyspharm/naivestates) | Univariate mixture modeling and gating | 1.7.0 |
+| [Squidpy](https://github.com/theislab/squidpy) | Spatial single-cell analysis toolkit | 1.1.2 |
