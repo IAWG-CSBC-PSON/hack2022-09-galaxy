@@ -17,7 +17,10 @@ sh ./run.sh
 ```
 
 ## Data
-Example datasets (OME-TIFF registered images) will be provided on Synapse [syn26848767](https://www.synapse.org/#!Synapse:syn26848767) and the test Galaxy instances (TBD).
+Example datasets (OME-TIFF registered images) are provided on Synapse [syn26848767](https://www.synapse.org/#!Synapse:syn26848767) and the test Galaxy instances (TBD). The example datasets include 3 cores from a Breast Cancer Tissue Microarray that have been serially sectioned. Adjacent sections were profiled on:
+ - Multiple Immunohistochemistry (mIHC) ([PMID: 28380359](https://pubmed.ncbi.nlm.nih.gov/28380359/))
+ - Cyclic Multiplexed-Immunofluorescence (cmIF) ([PMID: 31502168](https://pubmed.ncbi.nlm.nih.gov/31502168/))
+ - Tissue-based Cyclic Immunofluorescence (t-CyCIF) ([PMID: 29993362](https://pubmed.ncbi.nlm.nih.gov/29993362/))
 
 ## Testing and Deployment
 Testing of tools can be completed using a local instance of Galaxy or using Planemo (see docs below). Cloud instances installed with all MCMICRO tools will be available for deployment and additional testing of tools.
