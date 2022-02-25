@@ -1,0 +1,80 @@
+<tool id="mcmicro-ilastik" name="Mcmicro Ilastik" version="1.1.0.0">
+    <description>Preparation and processing of ome.tif images with Ilastik</description>
+
+    <requirements>
+        <!--<requirement type="package">mcmicro-ilastik</requirement>-->
+        <container type="docker">labsyspharm/mcmicro-ilastik:latest</container>
+    </requirements>
+
+    <command detect_errors="exit_code"><![CDATA[
+        #if $mode.mode_selector == "train"
+            
+            ##ln -s $mode.input ${mode.input}_ome.tiff &&
+            python '$__tool_directory__/CommandIlastikPrepOME.py'
+                --input "${"' '".join(map(str, $mode.input))}"
+                --output _working
+                --num_channels $mode.num_channels
+
+            #if $mode.channelIDs
+                --channelIDs $mode.channelIDs
+            #end if
+
+            #if $mode.ring_mask
+                --ring_mask
+            #end if
+            
+            #if $mode.crop_section.crop
+                --crop
+            #end if
+        #else if $mode.mode_selector == "apply"
+            run_ilastik.sh --headless 
+                --project=$project 
+                $hdf5_image
+            #if $mode.debug
+                --debug
+            #end if
+        #end if
+    ]]></command>
+
+    <inputs>
+        <conditional name="mode">
+            <param type="select" name="mode_selector" label="Mode" help="Train or Apply classifier.">
+                <option value="train">Train Classifier</option>
+                <option value="apply">Apply Classifier with Ilastik</option>
+            </param>
+            <when value="train">
+                <param type="data" name="input" multiple="true" format="tiff" help="Input images" />
+                <param type="integer" name="num_channels" value="0" label="Number of Channels" help="Number of channels to export per image (Ex: 40 corresponds to a 40 channel ome.tif image)." />
+                <param type="text" name="channelIDs" optional="true" label="Channel Indices" help="Integer (1-based) indices specifying which channels to export (Ex: 1 2 4)." />
+                <param type="boolean" name="ring_mask" checked="false" label="Ring Mask" help="Include if you have a ring mask in the same directory to use for reducing size of hdf5 image. Do not include if not." />
+                <section name="crop_section" title="Crop Settings" >
+                    <param type="boolean" name="crop" checked="false" label="Crop" help="If specified, crop regions for ilastik training." />
+                    <param type="float" name="nonzero_fraction" value="0.0" label="Nonzero Fraction" help="Indicates fraction of pixels per crop above global threshold to ensure."/>
+                    <param type="integer" name="nuclei_index" value="0" help="(1-based) Index of nuclei channel to use for nonzero_fraction argument." />
+                    <param type="text" name="crop_size" label="Crop Size" help="Height and width of crop range (Ex. 400 400)."/>
+                    <param type="integer" name="crop_amount" value="0" label="Crop Amount" help="Number of crops you would like to extract." />
+                </section>
+            </when>
+            <when value="apply">
+                <param type="data" name="project" format=""  label="Project" help="A project file to open on startup." />
+                <param type="data" name="hdf5_image" format="hdf5" label="Project" help="A project file to open on startup."/>
+                <param type="boolean" name="debug" checked="False" label="Debug Mode" help="Start ilastik in debug mode."/>
+            </when>
+        </conditional>
+    </inputs>
+
+    <outputs>
+        <data name="hdf5_image_output">
+            <discover_datasets pattern="__designation_and_ext__" ext="hdf5" visible="true" />
+        </data>
+        <data name="crop_summary">
+            <discover_datasets pattern="(?P&lt;designation&gt;.+)_CropSummary\.txt" ext="txt" visible="true" />
+            <filter>mode.crop_amount</filter>
+        </data>
+    </outputs>
+
+    <help><![CDATA[
+        TODO: Fill in help.
+    ]]></help>
+
+</tool>
