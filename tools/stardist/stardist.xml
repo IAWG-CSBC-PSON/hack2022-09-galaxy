@@ -1,0 +1,59 @@
+<tool id="stardist" name="StarDist" version="@VERSION@.0">
+    <description>Object Detection with Star-convex Shapes</description>
+
+    <macros>
+        <import>macros.xml</import>
+    </macros>
+ 
+    <expand macro="requirements"/>
+    @VERSION_CMD@
+
+    <command detect_errors="exit_code"><![CDATA[
+        #if $mode.mode_selector == "apply"
+            python '$__tool_directory__/stardist_pretrained.py'
+                --model $mode.model_selector
+                
+                #if $mode.image
+                    --input $mode.image
+                #end if
+                --output $prediction
+        #end if
+    ]]></command>
+
+    <inputs>
+        <conditional name="mode">
+            <param type="select" name="mode_selector" label="Mode" help="Train or apply StarDist model.">
+                <option value="apply">Apply Model</option>
+            </param>
+            <when value="apply">
+                <param type="select" name="model_selector" label="Pretrained 2D Model">
+                    <option value="2D_versatile_fluo">2D Versatile Fluorescence</option>
+                    <option value="2D_versatile_he">2D Versatile HE</option>
+                </param>
+                <param type="data" name="image" format="" optional="true" />
+            </when>
+        </conditional>
+    </inputs>
+
+    <outputs>
+        <data format="png" name="prediction" />
+    </outputs>
+
+    <help><![CDATA[
+**Pretrained Model Descriptions**
+
+*2D Versatile Fluorescence*
+
+- Modality (staining): Fluorescence (nuclear marker)
+- Image format: 2D single channel
+- Versatile (fluorescent nuclei) and DSB 2018 (from StarDist 2D paper) that were both trained on a subset of the DSB 2018 nuclei segmentation challenge dataset.
+
+*2D Versatile H&E*
+
+- Modality (staining): Brightfield (H&E)
+- Image format: 2D RGB
+- Versatile (H&E nuclei) that was trained on images from the MoNuSeg 2018 training data and the TNBC dataset from Naylor et al. (2018).
+
+    ]]></help>
+
+</tool>
